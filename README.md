@@ -1,4 +1,2 @@
-# cme211-thomas-brink
-cme211-thomas-brink created by GitHub Classroom
-
+# CME 211 Thomas Brink
 This is the private repository of Thomas Brink for the course CME 211.
