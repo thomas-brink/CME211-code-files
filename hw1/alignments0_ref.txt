@@ -1,0 +1,5 @@
+TTA -1
+ACG 0
+TGC 3
+CTC 5
+CGT 1 7
