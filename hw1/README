@@ -1,1 +1,163 @@
 This is the readme file belonging to Homework 1 of Thomas Brink for the CME 211 course.
+HW1 contains the files 'reference0.txt', 'reads0.txt', 'alignments0_ref.txt',
+'generatedata.py', and 'processdata.py'. The HW1 assignment is broken down in three parts.
+
+--- Part 1 ---
+We have generated a reference string of length 10 ('reference0.txt') and 5 reads
+of length 3 (in 'reads0.txt'). The alignment between the reference and the reads
+is provided in 'alignments0_ref.txt'. 
+
+--- Part 2 ---
+We provide the 'generatedata.py' file to generate a reference string and reads given
+as inputs the desired reference length, number of reads, and read length. We run
+three cases:
+- reference length = 1000, number of reads = 600, read length = 50
+- reference length = 10000, number of reads = 6000, read length = 50
+- reference length = 100000, number of reads = 60000, read length = 50
+
+Below, we provide a command line log for the three cases.
+
+-- Case 1 --
+$ python3 generatedata.py 1000 600 50 "ref_1.txt" "reads_1.txt"
+reference length: 1000
+number reads: 600
+read length: 50
+aligns 0: 0.13666666666666666
+aligns 1: 0.7816666666666666
+aligns 2: 0.08166666666666667
+
+-- Case 2 --
+$ python3 generatedata.py 10000 6000 50 "ref_2.txt" "reads_2.txt"
+reference length: 10000
+number reads: 6000
+read length: 50
+aligns 0: 0.13983333333333334
+aligns 1: 0.755
+aligns 2: 0.10516666666666667
+
+-- Case 3 --
+$ python3 generatedata.py 100000 60000 50 "ref_3.txt" "reads_3.txt"
+reference length: 100000
+number reads: 60000
+read length: 50
+aligns 0: 0.14808333333333334
+aligns 1: 0.74855
+aligns 2: 0.10336666666666666
+
+-- Question: if your code works properly for your handwritten data, will it
+always work correctly for other data sets? --
+In this part, we created test data for the reference string and reads. We test
+these by computing alignments in Part 3. Since we created test data in our own
+specific manner, it is valuable to discuss scalability to other data sets.
+Firstly, we create a reference string with a specific length using random number 
+generation. Furthermore, we generate a number of reads with a specified length. 
+For the reads that do not align, we create them by specifically selecting reads
+that do not occur in the reference string. For the one- and two-alignment reads, 
+we take substrings of a part of the reference, which makes sure that the reads 
+align at least as often as they are supposed to. However, since the reference string
+is subject to randomness, it could be that the selected substring for the read appears
+more than once c.q. twice in the reference for the one-align c.q. two-align cases. Thus,
+the one-align reads could actually align twice, thrice, ... The two-align cases could
+actually occur two, four, six, ... times. 
+
+Furthermore, the randomness used in generating the data is specified in percentages. For
+the three test cases, these percentages (fraction of reference string) evaluate to integers.
+However, in other data sets, this could also not be the case. We account for this by making 
+sure that the reference string is always of the pre-specified length. Also, we make sure that
+2-align reads have a starting position always read_length positions before the reference
+length. What we do not account for, is the possibility that the read length is relatively 
+large compared to the reference. This could cause our program to not be able to form two-align
+reads (apart from through randomness). This would for instance happen if the reference length 
+is 10 and the read length is 4.
+
+-- Question: should you expect an exact 15%/75%/10% distribution for the reads that align zero,
+one, and two times? What other factors will affect the exact distribution of the reads? --
+We should not expect an exact 15%/75%/10% distribution for the reads. This is due to two reasons.
+Firstly, we use the random.random() function to form the distribution of alignments. That is, we 
+generate random numbers and select the bucket of alignment for a read based on this number.
+Of course, the random.random() function is random and can, e.g., cause the 75% bucket to appear 
+75.5% of times. Secondly, our distribution is based on the number of reads that we consider.
+The more reads means, the more random numbers we draw, and the closer the distribution will match 
+the 15%/75%/10% distribution. Thirdly, the exact distribution is dependent on the read and reference 
+lengths. Namely, we generate random numbers to construct our reference and choose substrings of the
+reference to form reads. The smaller the read length and the larger the reference length, the higher
+the chance that a specific read will occur more often in the reference. This could cause a situation
+as described in the previous question (e.g., a 1-align read actually aligns twice, three times, ...),
+which leads to a distorted distribution where the fraction of 1-aligns will be lower than 75% and the
+fraction of 2-aligns higher than 10%. Please note that the 0-aligns are specifically constructed so 
+as to not align; their fraction will tend towards 15%.
+
+-- Question: How much time did you spend writing the code for this part? --
+I spent around 2 hours writing the code for this part and around 1 hour to figure out how I could make
+the code faster (it does not run in 2 seconds for the third test case).    
+
+
+--- Part 3 ---
+In this part, we provide the file 'processdata.py' which is an alignment program that takes as inputs a
+reference file and a read file and outputs an alignment file. We can run processdata.py for the three 
+cases described in Part 2, which yields the following command line log.
+
+-- Case 1 --
+$ python3 processdata.py ref_1.txt reads_1.txt align_1.txt
+reference length: 1000
+number reads : 600
+aligns 0: 0.13666666666666666
+aligns 1: 0.7816666666666666
+aligns 2: 0.08166666666666667
+elapsed time: 0.07186079025268555
+
+-- Case 2 --
+$ python3 processdata.py ref_2.txt reads_2.txt align_2.txt
+reference length: 1000
+number reads: 600
+aligns 0: 0.13983333333333334
+aligns 1: 0.755
+aligns 2: 0.10516666666666667
+elapsed time: 0.35927677154541016
+
+-- Case 3 --
+$ python3 processdata.py ref_3.txt reads_3.txt align_3.txt
+reference length: 100000
+number reads: 60000
+aligns 0: 0.14808333333333334
+aligns 1: 0.74855
+aligns 2: 0.10336666666666666
+elapsed time: 24.620574712753296
+
+-- Question: does the distribution of reads that align zero, one, and two or more times exactly match
+the distributions you computed as you were creating the datasets? Why or why not? --
+In this setup, the distributions of the generated and aligned data do match exactly. This can easily
+be checked by looking at the command log outputs given above. Theoretically, however, the outputs do
+not necessarily have to match. That is, when generating data via our scheme, some randomness (as
+already described in the questions of Part 2) could lead to 1-align reads appearing more often than once.
+This would lead to a shifting distribution (towards 2-aligns). However, since the probability for this to
+happen is very low in the case of reads with length 50, we will see that the outputs of our generated
+and aligned data will (almost) always exactly match. 
+
+-- Question: Using your timing results, what can you say about the scalability of your implementation as
+the size of the reference and read length varies? Estimate the time to align the data for a human at 30x 
+coverage and a read length of 50. Ultimately: is it feasible to actually analyze all the data for a human
+using your program? --
+In the three cases that we showed, the coverage, i.e., number of reads * read length / reference length, 
+was fixed at 30 and the read length was fixed at 50. Thus, we varied the reference length and number of
+reads simultaneously by a factor 10. For case 1, the reference length = 1000 and the no. of reads = 600.
+For case 2, the reference length = 10000 and the no. of reads = 6000. For case 3, the reference length =
+100000 and the no. of reads = 60000. The runtime of case 1 is 0.07 seconds, the runtime of case 2 is 0.36
+seconds, and the runtime of case 3 is 24.6 seconds. If we look at the processdata.py file, we see that we
+iterate over all entries in the reference string for all reads. Thus, our code should scale linearly in the
+length of the reference string and linearly in the number of reads. Thus, for a fixed coverage, the time
+should scale quadratically. As the code also contains some basic commands (importing packages, initializing
+variables, etc.) that are of constant time, the runtimes for the three cases do not seem to scale quadratically.
+However, I have inspected some other cases with larger reference length and/or number of reads, from which
+the quadratic property is apparent.
+
+Using this quadratic runtime property, we can estimate the time it will take to analyze the whole human genome.
+The human genome contains 3 billion base pairs (reference length is 3 000 000 000). We take the read length to
+be fixed at 50 and look for a coverage of 30 (as in the test cases). Thus, the number of reads would have to be
+1.8 billion (1 800 000 000). We see that we increase the reference length and number of reads by a factor 30 000
+compared to test case 3 (100 000 * 30 000 = 3 000 000 000). Thus, the runtime is expected to increase by a factor
+(30 000)^2 = 900 000 000. Thus, the runtime would be 24.6 * 900 000 000 = 22.14 billion seconds ~= 700 years. 
+Of course, this is not feasible with our program, such that other methods should be developed.
+
+-- Question: How much time did you spend writing the code for this part? --
+I spent about an hour writing the code for this part. 
