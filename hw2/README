@@ -1,1 +1,79 @@
 This is the README file for Homework 2 of Thomas Brink for the CME 211 course.
+
+--- Part 1 ---
+
+-- What were your considerations when creating the test data? --
+When creating the test data, I made several considerations. First, I made sure that
+there are movies with positive and negative similarity. That is, I made
+sure there were different sorts of correlation present in the data. 
+Second, I made sure that the similarity between movies does not only depend 
+on a single user, but is based on multiple users' ratings. Third, I made 
+sure not to order the user and movie id's in the test data set, as these are 
+not expected to be ordered in real-life. Fourth, I made sure that the user id 
+does not necessarily lie in the range 1 to number of users. That is,
+there may be user id's within the range of the number of users (e.g., 
+user id = 2 does not exist when there are 3 users) that do not exist, 
+while user id's outside this range may exist (e.g., user id = 337 may 
+exist if the data set contains 200 users). This ensures further
+scalability to real-life data. 
+
+-- Did you create a reference solution for your test data? If so, how? --
+To create a reference solution, I computed similarities manually. That is, 
+since there are three movies in the test data, we have to compute three 
+similarities: s_12 (between movie 1 and 2), s_13 (between movie 1 and 3), 
+and s_23 (between movie 2 and 3). These can easily be computed manually.
+Another option would be to use the built-in cosine similarity function in
+Python.
+
+-- Were there certain characteristics of the real data and file format
+that you made sure to capture in your test data? --
+I assumed that the data contained the same columns as the real data, and
+in the same order. I used this in the read_data() function in similarity.py
+to construct a nested dictionary. Furthermore, I made both the test data
+and the real data come from a .data format, where the separation between
+the columns is the same (tab-separated). Note, however, that this is not
+required for similarity.py. Lastly, I did not assume data columns to have
+a certain length or type. This is all flexible and can be captured by
+the code provided in part 2. 
+
+--- Part 2 ---
+
+-- Command line log --
+The command line log for running the similarity.py file on the movie-user-rating data is given as follows.
+
+$ python3 similarity.py ml-100k/u.data similarities.txt 5
+Input MovieLens file: ml-100k/u.data
+Output file for similarity data: similarities.txt
+Minimum number of common users: 5
+Read 100000 lines with total of 1682 movies and 943 users
+Computed similarities in 51.199 seconds
+
+-- First 10 lines of output --
+The first 10 lines of output are given by:
+
+1 (918,0.91,5)
+2 (1056,1.0,5)
+3 (1081,0.98,5)
+4 (35,0.8,6)
+5 (976,0.93,5)
+6 (279,0.96,5)
+7 (968,1,0.7)
+8 (590,0.86,6)
+9 (113,0.96,5)
+10 (1202,0.97,5)
+
+-- Decomposition of program --
+The similarity.py script contains four functions. First, the read_data() function takes an input file and 
+creates a nested dictionary {movie_id: {user_id, rating}}. Second, the mean_movie_rating function takes in 
+the nested dictionary and computes the average rating per movie across all users. Third, the pairwise_similarity
+function computes the similarity between two inputted movies. Fourth, the maximum_similarities function ties all
+former three functions together and computes, for each movie, the most similar movie, the maximum similarity, and
+the count of common users between these movies, which are then written to an output file. In the script, I make
+sure that a user threshold on the number of common users between two movies can be inputted. Furthermore, I handle
+cases where the similarity formula in the assignment has a zero denominator by distinguishing two cases. Firstly, 
+if both movies have zero mean deviance, then the pairwise ratings between two movies consist of a single point. 
+This way, I interpret this scenario as a 'single user' (there is no more information than the constant ratings), 
+such that I do not consider this case to pass the threshold. Secondly, if one of the two movies has constant
+ratings across common users, then this zero deviance can be interpreted as having zero correlation with the other
+movie (if the rating of the other movie changes, this movie's rating remains constant). Thus, I output a similarity
+of 0. 
