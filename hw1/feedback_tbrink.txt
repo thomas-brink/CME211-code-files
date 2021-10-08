@@ -1,0 +1,103 @@
+FILE:          README
+DOCUMENTATION  
+
+COMMENTS:
+-good write-up
+
+                  
+
+
+--------------------------
+FILE:          generatedata.py
+CODEQUALITY    
+
+COMMENTS:
+-Imported modules must be soted in lexicographic order, but no points deducted in this hw.
+
+RELEVANT CODE:
+import sys
+import random
+import time
+
+                  
+
+
+--------------------------
+FILE:          generatedata.py
+DOCUMENTATION  
+
+COMMENTS:
+-good comments
+
+                  
+
+
+--------------------------
+FILE:          generatedata.py
+CODEQUALITY    
+
+COMMENTS:
+-good design and stlye
+
+                  
+
+
+--------------------------
+FILE:          processdata.py
+CODEQUALITY    
+
+COMMENTS:
+-It would make more sense to start the timer inside the conditional block (if __main__ == ...).
+
+RELEVANT CODE:
+# Set start time of run
+start_time = time.time()
+
+                  
+
+
+--------------------------
+FILE:          processdata.py
+DOCUMENTATION  
+
+COMMENTS:
+-good comments
+
+                  
+
+
+--------------------------
+FILE:          processdata.py
+CODEQUALITY    
+
+COMMENTS:
+-good design and stlye
+
+                  
+
+
+--------------------------
+FILE:          processdata.py
+FUNCTIONALITY  
+
+COMMENTS:
+-good
+
+                  
+
+
+--------------------------
+
+GRADING TA                  
+SUNet ID: ladouceu, GitHub ID: ladouceu
+###################################################
+
+FUNCTIONALITY SCORE:                      +
+###################################################
+
+WRITEUP SCORE:                            +
+###################################################
+
+CODEQUALITY SCORE:                        +
+###################################################
+If you have any problem about grading result, please file an issue in your GitHub repo.
