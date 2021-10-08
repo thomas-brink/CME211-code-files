@@ -1,6 +1,10 @@
+#--codequality_0
+#--Imported modules must be soted in lexicographic order, but no points deducted in this hw.
+#--START
 import sys
 import random
 import time
+#--END
 
 if __name__ == "__main__":
     if len(sys.argv) <= 5:
@@ -102,3 +106,10 @@ if __name__ == "__main__":
     print("aligns 1:", nr_align1/nreads)
     print("aligns 2:", nr_align2/nreads)
 
+#--documentation_0
+#--good comments
+#--END
+
+#--codequality_0
+#--good design and stlye
+#--END

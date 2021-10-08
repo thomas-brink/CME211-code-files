@@ -160,4 +160,9 @@ compared to test case 3 (100 000 * 30 000 = 3 000 000 000). Thus, the runtime is
 Of course, this is not feasible with our program, such that other methods should be developed.
 
 -- Question: How much time did you spend writing the code for this part? --
-I spent about an hour writing the code for this part. 
+I spent about an hour writing the code for this part.
+
+
+#--documentation_0
+#--good write-up
+#--END 

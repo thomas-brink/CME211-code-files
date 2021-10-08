@@ -1,8 +1,12 @@
 import sys
 import time
 
+#--codequality_0
+#--It would make more sense to start the timer inside the conditional block (if __main__ == ...).
+#--START
 # Set start time of run
 start_time = time.time()
+#--END
 
 if __name__ == "__main__":
     if len(sys.argv) <= 3:
@@ -73,3 +77,14 @@ print('aligns 1:', nr_align1/nreads)
 print('aligns 2:', nr_align2/nreads)
 print('elapsed time:', end_time-start_time)
 
+#--documentation_0
+#--good comments
+#--END
+
+#--codequality_0
+#--good design and stlye
+#--END
+
+#--functionality_0
+#--good
+#--END
