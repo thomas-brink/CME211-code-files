@@ -1,0 +1,35 @@
+FILE:          README
+DOCUMENTATION  
+
+COMMENTS:
+-great job, keep up the good work!
+
+                  
+
+
+--------------------------
+FILE:          similarity.py
+FUNCTIONALITY  
+
+COMMENTS:
+-good job! excellent use of functions, beautiful code!
+
+                  
+
+
+--------------------------
+
+GRADING TA                  
+SUNet ID: adkakne, GitHub ID aasavari-kakne
+###################################################
+
+FUNCTIONALITY SCORE:                      +
+###################################################
+
+WRITEUP SCORE:                            +
+###################################################
+
+CODEQUALITY SCORE:                        +
+###################################################
+You used 0 late days on this assignment.
+If you have any problem about grading result, please file an issue in your GitHub repo.
