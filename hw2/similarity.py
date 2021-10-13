@@ -1,3 +1,16 @@
+#--code-quality_0
+#--following line will executed at all times 
+#--whether __name__ is "__main__" or not
+#--because it is written outside the if scope
+#--of statement "if __name__ == "__main__":"
+#--START
+similarities = maximum_similarities(input_file, output_file, user_threshold)
+#--END
+
+#--functionality_0
+#--good job! excellent use of functions, beautiful code!
+#--END
+
 import sys
 import time
 
