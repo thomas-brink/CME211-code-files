@@ -4,11 +4,12 @@ import os
 
 class Airfoil:
     """ Class that takes in a directory and gives an airfoil instance,
-        computing several properties of the data in the directory that
-        corresponds with an airfoil. """
+        computing and printing several properties of the data in the
+        directory that corresponds with an airfoil. """
 
     def __init__(self, input_directory):
-        """ Function that initializes a class instance """
+        """ Function that initializes a class instance based on an
+            input directory. """
         # Call methods defined in the class
         self.directory = input_directory
         self.check_input()
@@ -20,7 +21,7 @@ class Airfoil:
         """ Function that takes the class object with the directory name as
             input and checks whether this directory exists. If so, we check
             for files with xy- and alpha-data. We store file names for the
-            xy- and alpha-data """
+            xy- and alpha-data. """
         # Handle trailing slash
         if self.directory[-1] != '/':
             self.directory += '/'
@@ -43,8 +44,7 @@ class Airfoil:
 
     def load_xy(self):
         """ Function that loads in the xy-data from the check_input function
-            and creates lists of the x- and y-coordinates. Also, this
-            function starts printing the first few lines of output. """
+            and creates lists of x- and y-coordinates. """
         # Initialize lists of x- and y-coordinates
         self.x_data = []
         self.y_data = []
@@ -62,18 +62,13 @@ class Airfoil:
                     self.x_data.append(x_coord)
                     self.y_data.append(y_coord)
                 except:
-                    # File cannot be read properly (wrong format, ...)
+                    # File cannot be read properly (error)
                     raise RuntimeError('Error while reading input file')
-
-        # Start printing output header
-        print('Test case:', self.xy_header)
-        print('alpha     cl           stagnation pt      ')
-        print('-----  -------  --------------------------')
 
     def load_alpha(self):
         """ Function that uses the list of files with alpha-data and stores
-            a dictionary with alpha values as keys and pressure coefficients
-            data as values """
+            a dictionary with alpha values as keys and pressure coefficient
+            data as values. """
         # Initialize dictionary
         self.pressure_dict = {}
 
@@ -86,20 +81,20 @@ class Airfoil:
 
             with open(alpha_file, 'r') as f:
                 # Add pressure coefficients for alpha to the dictionary
-                header_line = next(f)
+                header_line = next(f) # Skip header
                 self.pressure_dict[alpha_val] = f.read().strip().split()
 
     def compute_output(self):
         """ Function that uses the processed xy- and alpha-data to
             compute the lift coefficient and stagnation points at all
-            angles of attack """
+            angles of attack. """
         # Initialize output dictionary of alphas and airfoil properties
         self.output_dict = {}
 
         # Compute chord length
         chord_length = max(self.x_data) - min(self.x_data)
 
-        # Initialize differences between consecutive points
+        # Initialize distances between consecutive points
         delta_x = []
         delta_y = []
 
@@ -111,6 +106,7 @@ class Airfoil:
         for alpha in self.pressure_dict:
             # Iterate over all alpha-files and check size with xy-data
             if len(self.pressure_dict[alpha]) != len(delta_x):
+                # If sizes are not in agreement, raise error
                 raise RuntimeError('Size mismatch of xy- and pressure data')
 
             # Initialize total Cartesian force coefficients for x and y
@@ -123,7 +119,7 @@ class Airfoil:
             for j in range(len(self.x_data)-1):
                 # Iterate over all pressure coefficients
                 if float(self.pressure_dict[alpha][j]) > max_pressure:
-                    # Update stagnation point
+                    # Update stagnation point and max. pressure
                     max_pressure = float(self.pressure_dict[alpha][j])
                     stag_x = (self.x_data[j] + self.x_data[j+1])/2
                     stag_y = (self.y_data[j] + self.y_data[j+1])/2
@@ -148,9 +144,17 @@ class Airfoil:
             self.output_dict[alpha] = [lift_coeff,stag_x,stag_y,max_pressure]
 
     def __repr__(self):
-        """ Function that creates a string representation
-            of our airfoil instance, printing out angles
-            of attack and airfoil properties. """
+        """ Function that creates a string representation of our airfoil
+            instance, printing out angles of attack and airfoil properties. """
+        # Initialize output string
+        formatted_output = ''
+
+        # Add header to output string
+        formatted_output += 'Test case: ' + self.xy_header + '\n'
+        formatted_output += 'alpha     cl           stagnation pt' + '\n'
+        formatted_output += '-----  -------  --------------------------'
+        formatted_output += '\n'
+
         # Sort alpha values
         alpha_list = list(self.output_dict.keys())
         alpha_list.sort(key = float)
@@ -163,16 +167,14 @@ class Airfoil:
             format_stag_y = "{:.4f}".format(self.output_dict[alpha][2])
             format_pressure = "{:.4f}".format(self.output_dict[alpha][3])
 
-            # Print formatted outputs
-            print("{:>5}".format(format_alpha),end='  ')
-            print("{:>7}".format(format_lift), ' (', end='')
-            print(format_stag_x, end='')
-            print(',', "{:>7}".format(format_stag_y), end='')
+            formatted_output += "{:>5}".format(format_alpha) + '  '
+            formatted_output += "{:>7}".format(format_lift) + '  ( '
+            formatted_output += format_stag_x + ', '
+            formatted_output += "{:>7}".format(format_stag_y) + ')  '
+            formatted_output += format_pressure
 
-            # Return last part of the airfoil properties to __repr__
             if alpha != alpha_list[-1]:
-                print(')', ' ', format_pressure)
-            else:
-                print(')', '  ', end='')
+                # Newline unless last alpha value is reached
+                formatted_output += '\n'
 
-        return(format_pressure)
+        return(formatted_output)

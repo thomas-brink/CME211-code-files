@@ -1,24 +1,70 @@
 This is the README belonging to Homework 3 of Thomas Brink for the CME 211 course.
 
+--- Breakdown of code ---
+
 In the Airfoil class that I created, I use 6 functions that allow us to analyze a directory 
 with data on airfoils with different angles of attack. The user inputs a directory name to
-the Airfoil class to create an instance. The 6 functions are as follows. 
-Firstly, I have a function that initializes an airfoil instance and calls the other functions 
-created in the class. Secondly, we have a check_input function that takes as input the directory 
+the Airfoil class to create an instance. The 6 functions are as follows.
+ 
+First, we have a function '__init__' that initializes an airfoil instance and calls the other functions 
+created in the class. Second, the 'check_input' function takes as input the user directory 
 and checks whether this directory exists (otherwise it gives an error), and whether the directory
-contains files containing (x,y)- and alpha-data, where (x,y) give coordinates of an airfoil and
+contains files containing (x,y)- and alpha-data, where (x,y)-data gives coordinates of an airfoil and
 alpha-data contains data on the pressure coefficients belonging to a certain angle of attack alpha.
-In case the directory or either one of the file types does not exist, we raise RuntimeErrors. 
-The third function is read_xy, which reads in the (x,y)-data and puts this data in lists for the
-x- and y-components. The fourth function is read_alpha, where we read the alpha files in the 
+In case the directory or either one of the file types does not exist, we raise RuntimeErrors.
+ 
+The third function is 'read_xy', which reads in the (x,y)-data and puts this data in lists for the
+x- and y-components. The fourth function is 'read_alpha', where we read the alpha files in the 
 directory and store the data for these files in a dictionary with the alpha values as keys and
-the pressure coefficients as values. Fifth, we have a compute_output function that performs
+the pressure coefficients as values. Fifth, we have a 'compute_output' function that performs
 all analysis on the data that we have obtained and processed. Here, we also check whether the 
-size of the different data files are in agreement (xy and alpha). We compute the lift coefficient
-and stagnation points for all angles of attack. Last, we have a __repr__ function that gives a 
-string representation of our analysis and allows us to print output. We apply our class by means
-of the main.py function as given in the assignment description. By creating a class, we perform
-abstraction. That is, for users, creating an Airfoil instance is an easy-to-interpret way of viewing
-the code and its actions. Also, the class-type programming allows us to make our method scalable
-and productive. In terms of encapsulation, we do not really worry about privacy issues. Our variables
-are not very informative of themselves, so we do not distinguish between making variables private or public. 
+size of the different data files are in agreement (xy and alpha) and raise an exception otherwise. 
+We compute the lift coefficient and stagnation points for all angles of attack. Last, we have a 
+'__repr__' function that gives a string representation of our analysis and allows us to 'print' an
+instance of our class. We apply our class by means of the main.py function as given in the 
+assignment description. 
+
+--- Error checking and exception generation ---
+
+In this code, we apply four different errors, for which we raise RuntimeError exceptions. First,
+when the directory provided by the user does not exist, we raise an exception. Second, when this
+directory does exist, but either no 'xy.dat' or no 'alpha*.dat' file exists in this directory, we
+raise an exception. Third, when the directory and desired files exist, we may encounter an error
+when trying to read our data. In this case, we again handle this error by means of a RuntimeError
+exception. Last, we combine the xy- and alpha-data in the 'compute_output' function. In case the
+two types of data do not align, i.e., their sizes do not agree, we again raise an exception. We
+do so as we directly map xy-data to alpha-data (assuming that the data points form a sequence
+that is the same across both xy- and alpha-data). 
+
+--- Key OOP concepts ---
+
+In this code, we perform object-oriented programming (OOP). In OOP, there are several concepts
+that are very important, which we wish to emphasize. First, there is the concept of abstraction.
+With our code, we allow the user to simply call our class and create an instance, for which the
+code automatically performs all necessary computations and handles all logic and errors. This way,
+the user can easily conceptualize what he is doing without having to understand the complexity of
+the computations being performed. That is, we provide a system in a way that is well-interpretable.
+Essentially, we only show the essentials to the user.
+
+Second, we have the concept of encapsulation. This means that our code should be very easy to
+implement, and we should make sure that the accessibility of our code does not cause any side-effects
+or privacy issues. For instance, we could make some variables private. This way, we make our system
+easy-to-use and problem-proof. In our Airfoil class, the simplicity lies mostly in making sure that
+a user only has to input a directory and call a main function, whereafter the class does its magic
+itself. Most of this is due to the '__repr__' function, which lets our class, in addition to 
+performing computations, be represented in a user-friendly format. In our code, we do not make use of
+private variables, as we feel that our data is not sensitive or necessarily 'bad' to make accessible.
+
+Third, we have the concept of decomposition. This concept means that our class has the aim of solving
+some sort of problem, which it breaks down into smaller and easier-to-grasp pieces. In our case, we
+could have modeled our entire class using, e.g., 3 functions ('__init__', '__repr__', and a computation
+function). However, we choose to break down our problem in smaller steps that are connected and more
+sensible in smaller, stepwise fashion. For instance, it seems totally sensible to first process our
+directory, then read the data in the respective files, and then perform computations on this data
+instead of doing this all at once in a single function. This concept of decomposition is thus clearly
+present in our code.  
+
+--- Miscellaneous ---
+For this code, I spent about 6 hours working on coding functionality, style, and writeup combined. In
+addition, I would say I spent about 1-2 hours brainstorming on what problem I needed to solve and
+how to structure the class.
