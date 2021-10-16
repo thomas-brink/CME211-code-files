@@ -1,1 +1,24 @@
 This is the README belonging to Homework 3 of Thomas Brink for the CME 211 course.
+
+In the Airfoil class that I created, I use 6 functions that allow us to analyze a directory 
+with data on airfoils with different angles of attack. The user inputs a directory name to
+the Airfoil class to create an instance. The 6 functions are as follows. 
+Firstly, I have a function that initializes an airfoil instance and calls the other functions 
+created in the class. Secondly, we have a check_input function that takes as input the directory 
+and checks whether this directory exists (otherwise it gives an error), and whether the directory
+contains files containing (x,y)- and alpha-data, where (x,y) give coordinates of an airfoil and
+alpha-data contains data on the pressure coefficients belonging to a certain angle of attack alpha.
+In case the directory or either one of the file types does not exist, we raise RuntimeErrors. 
+The third function is read_xy, which reads in the (x,y)-data and puts this data in lists for the
+x- and y-components. The fourth function is read_alpha, where we read the alpha files in the 
+directory and store the data for these files in a dictionary with the alpha values as keys and
+the pressure coefficients as values. Fifth, we have a compute_output function that performs
+all analysis on the data that we have obtained and processed. Here, we also check whether the 
+size of the different data files are in agreement (xy and alpha). We compute the lift coefficient
+and stagnation points for all angles of attack. Last, we have a __repr__ function that gives a 
+string representation of our analysis and allows us to print output. We apply our class by means
+of the main.py function as given in the assignment description. By creating a class, we perform
+abstraction. That is, for users, creating an Airfoil instance is an easy-to-interpret way of viewing
+the code and its actions. Also, the class-type programming allows us to make our method scalable
+and productive. In terms of encapsulation, we do not really worry about privacy issues. Our variables
+are not very informative of themselves, so we do not distinguish between making variables private or public. 
