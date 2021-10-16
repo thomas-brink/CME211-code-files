@@ -74,7 +74,7 @@ class Airfoil:
 
         # For all files, extract alpha value. Using this value, store all data.
         for alpha_file in self.alpha_files:
-            # Find alpha value by searching between 'alpha' and '.dat' substrings
+            # Find alpha by searching between 'alpha' and '.dat' substrings
             startIndex = alpha_file.index("alpha") + len("alpha")
             endIndex = alpha_file.index(".dat")
             alpha_val = alpha_file[startIndex:endIndex]
