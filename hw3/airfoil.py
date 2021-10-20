@@ -16,16 +16,23 @@ class Airfoil:
         self.load_xy()
         self.load_alpha()
         self.compute_output()
+#--codequality_0
+#--Try to declare member variables inside __init__, improves readability of the class
+#--END
+
 
     def check_input(self):
         """ Function that takes the class object with the directory name as
             input and checks whether this directory exists. If so, we check
             for files with xy- and alpha-data. We store file names for the
             xy- and alpha-data. """
+#--codequality_0
+#--This works, but os.path.join can handle things like this for you (and is system independent)
+#--START
         # Handle trailing slash
         if self.directory[-1] != '/':
             self.directory += '/'
-
+#--END
         # If directory does not exist, raise runtime error
         if os.path.isdir(self.directory) != True:
             raise RuntimeError('Failed to find given input directory')
@@ -98,17 +105,23 @@ class Airfoil:
         delta_x = []
         delta_y = []
 
+#--functionality_0
+#--Good job only computing this once!
+#--START
         for i in range(len(self.x_data)-1):
             # Iterate over all coordinate pairs and compute their distance
             delta_x.append(self.x_data[i+1] - self.x_data[i])
             delta_y.append(self.y_data[i+1] - self.y_data[i])
-
+#--END
         for alpha in self.pressure_dict:
             # Iterate over all alpha-files and check size with xy-data
+#--codequality_0
+#--Really nice check here (:
+#--START
             if len(self.pressure_dict[alpha]) != len(delta_x):
                 # If sizes are not in agreement, raise error
                 raise RuntimeError('Size mismatch of xy- and pressure data')
-
+#--END
             # Initialize total Cartesian force coefficients for x and y
             cx = 0
             cy = 0
@@ -178,3 +191,7 @@ class Airfoil:
                 formatted_output += '\n'
 
         return(formatted_output)
+
+#--functionality_0
+#--Overall awesome job!!!
+#--END
