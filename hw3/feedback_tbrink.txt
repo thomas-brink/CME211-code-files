@@ -1,0 +1,91 @@
+FILE:          README
+DOCUMENTATION  
+
+COMMENTS:
+-Really thoughtful writeup (:
+
+                  
+
+
+--------------------------
+FILE:          airfoil.py
+CODEQUALITY    
+
+COMMENTS:
+-Try to declare member variables inside __init__, improves readability of the class
+
+                  
+
+
+--------------------------
+FILE:          airfoil.py
+CODEQUALITY    
+
+COMMENTS:
+-This works, but os.path.join can handle things like this for you (and is system independent)
+
+RELEVANT CODE:
+# Handle trailing slash
+        if self.directory[-1] != '/':
+            self.directory += '/'
+
+                  
+
+
+--------------------------
+FILE:          airfoil.py
+FUNCTIONALITY  
+
+COMMENTS:
+-Good job only computing this once!
+
+RELEVANT CODE:
+for i in range(len(self.x_data)-1):
+            # Iterate over all coordinate pairs and compute their distance
+            delta_x.append(self.x_data[i+1] - self.x_data[i])
+            delta_y.append(self.y_data[i+1] - self.y_data[i])
+
+                  
+
+
+--------------------------
+FILE:          airfoil.py
+CODEQUALITY    
+
+COMMENTS:
+-Really nice check here (:
+
+RELEVANT CODE:
+if len(self.pressure_dict[alpha]) != len(delta_x):
+                # If sizes are not in agreement, raise error
+                raise RuntimeError('Size mismatch of xy- and pressure data')
+
+                  
+
+
+--------------------------
+FILE:          airfoil.py
+FUNCTIONALITY  
+
+COMMENTS:
+-Overall awesome job!!!
+
+                  
+
+
+--------------------------
+
+GRADING TA                  
+SUNet ID: maxfit, GitHub ID trevormaxfield
+###################################################
+
+FUNCTIONALITY SCORE:                      +
+###################################################
+
+WRITEUP SCORE:                            +
+###################################################
+
+CODEQUALITY SCORE:                        +
+###################################################
+You used 1 late days on this assignment.
+If you have any problem about grading result, please file an issue in your GitHub repo.
