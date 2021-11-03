@@ -22,3 +22,17 @@ t = truss.Truss(joints_file,beams_file,plot_file)
 
 # Print string representation of truss
 print(t)
+
+#--functionality_0
+#--great job! not an easy assignment.
+#--END
+
+#--documentation_0
+#--good documentation. good write up. 
+#--however, no PDF included. No point taken off this time.
+#--END
+
+#--codequality_1
+#--imports not in lexicographic order. 
+#--Also, build forces function is too long.
+#--END

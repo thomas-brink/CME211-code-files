@@ -1,0 +1,47 @@
+FILE:          main.py
+FUNCTIONALITY  
+
+COMMENTS:
+-great job! not an easy assignment.
+
+                  
+
+
+--------------------------
+FILE:          main.py
+DOCUMENTATION  
+
+COMMENTS:
+-good documentation. good write up.
+-however, no PDF included. No point taken off this time.
+
+                  
+
+
+--------------------------
+FILE:          main.py
+CODEQUALITY    
+
+COMMENTS:
+-imports not in lexicographic order.
+-Also, build forces function is too long.
+
+POINTS DEDUCTED: 1
+
+
+--------------------------
+
+GRADING TA                  
+SUNet ID: samuellr, GitHub ID sam-randall
+###################################################
+
+FUNCTIONALITY SCORE:                      +
+###################################################
+
+WRITEUP SCORE:                            +
+###################################################
+
+CODEQUALITY SCORE:                       ok
+###################################################
+You used 0 late days on this assignment.
+If you have any problem about grading result, please file an issue in your GitHub repo.
