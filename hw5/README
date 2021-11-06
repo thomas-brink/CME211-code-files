@@ -7,4 +7,110 @@ in three parts; i) a problem description, ii) an explanation of the C++
 program, and iii) a summary of the Python program.
 
 -- Part 1: Problem Description --
+In this assignment, we are faced with the problem of finding a solution
+to a maze, which we do by applying the right hand wall following algorithm. 
+For this algorithm, you enter the maze and keep your hand on the wall to
+your right to move along the maze and eventually find an exit point. We
+can view the maze as a matrix with ones (wall cells) and zeros ('open'
+or path cells). There is a single entrance point, always on the top row
+of the maze, and the exit point always lies on the bottom row. A valid
+solution should move from entrance to exit without crossing any walls.   
 
+-- Part 2: C++ Program 'mazesolver.cpp' --
+In the mazesolver.cpp program, we read a maze (provided as an input file
+by the user) and compute a solution to the maze using the right hand
+wall following algorithm.
+
+For this program, we start off by checking the user inputs. To make sure
+the program runs smoothly, a user should input a maze file (containing
+row and column entries of all walls in a maze as rows, where the first
+row contains the number of rows and columns in the maze) and the name
+of a file the maze solution should be written to. In case the user does
+not provide these inputs, the program will print a usage message. An
+example of a valid command would be:
+
+ $ ./mazesolver maze1.txt solution1.txt
+
+where ./mazesolver runs the compiler mazesolver.cpp program and
+maze1.txt and solution1.txt are the input maze and solution files,
+respectively. 
+
+After having checked the user inputs, we initialize a static array
+with as size the number of rows and columns for the largest input
+maze (201 rows and 201 columns). We then open the input file
+(if possible) and check whether the static array has sufficient
+storage for this input maze. If this is the case, we initialize 
+all entries in the static array to be 0 and fill all entries for 
+which a (row, column)-pair exists in the input maze with a 1.
+In case we could not open the input file, we return an error message.
+ 
+Next, we initialize the starting position (row and column) of the
+solution path and set the entrance point to the column on the
+first row of the maze for which there is no wall (i.e., the entry
+in the first row of the static maze array that is 0). In case we
+could not find such an entrance, we return an error message. We
+write the first solution step (first row and column) to a file with
+the name as provided by the user.
+
+Then, we finally get to the right hand wall following algorithm.
+Given a direction of the previous step of the solution (up, down,
+left, or right), where entering the maze is seen as a downward
+movement, we check our next move. We do so by first checking
+if we can move right from our previous direction (e.g., if our
+previous step was moving left, then we first check if we can
+now move up) and continue looking for possible steps in 
+counterclockwise fashion. The first step that would bring us to
+a maze entry that is 0 (no wall) is the one we take. We continue
+taking such steps until we reach the last row of the maze, where
+we know that we have found a maze solution. Each step, we write
+the row and column number of the maze that we went to to the
+solution file. Thus, eventually, our solution file will contain
+the complete solution path.
+
+However, how do we know for sure that our right hand wall 
+following algorithm was implemented properly such that the
+eventual solution in fact is valid? We do so using a separate
+Python program called 'checksoln.py'.
+
+-- Part 3: Python Program 'checksoln.py' --
+In the checksoln.py program, we use a given maze and its
+solution file as provided by the mazesolver.cpp program to
+check the validity of the maze solution. To do so, we
+perform several steps.
+
+First, we check whether the user inputs the correct number
+of input arguments. In case the user does not provide enough
+arguments (e.g., no input and/or solution file), we print
+a usage message.
+
+Then, we try loading in the input and solution files and
+print an error message if we could not load one of the files.
+For this, we provide separate error messages for the two
+files, which enhances our program's usability. 
+
+Next, we use the input file to set the boundaries of the
+maze. We do so as the solution path should always remain
+within these boundaries. We check whether this is the
+case and return an error message (invalid solution) 
+otherwise.
+
+Consequently, we check whether the maze solution in fact
+only traverses through 'open' cells. That is, we check
+whether the solution does not cross any walls. In case
+we do find that the solution crosses a wall (a solution
+step corresponds with a maze array entry that is nonzero),
+we print an error message (invalid solution).
+
+Following this, we then check whether the solution starts
+at the top row and exits on the last row. If this is not 
+the case, we again print an error message (invalid solution).
+Last, we check whether each solution step is valid, i.e.,
+we move only one position at a time. If this does not hold,
+we print an error message (invalid solution). 
+
+In case no error was given, we print a message indicating
+that the maze solution is valid ("Solution is valid!").
+
+An example command for this program would be:
+
+$ python3 checksoln.py maze1.txt solution1.txt 

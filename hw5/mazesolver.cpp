@@ -14,7 +14,7 @@ enum direction {
 int main(int argc, char*argv[]) {
     /* Main function for performing the right hand wall following
        algorithm on a maze to find a solution (path from beginning
-       to ending) of the maze. When calling the mazesolver.py
+       to ending) of the maze. When calling the mazesolver.cpp
        file, the user should pass an input file (containing maze
        data) and a file name to which this function passes the
        solution. */
