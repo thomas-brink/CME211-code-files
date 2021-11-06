@@ -1,0 +1,10 @@
+This is the README file belonging to Homework 5 of Thomas Brink for the
+CME 211 course. In this homework, we provide a right hand wall following
+algorithm, implemented in C++, to find a solution path from the entrance
+to the exit of a maze. We check the validity of the solution path formed
+by our algorithm through a separate Python program. We divide this README
+in three parts; i) a problem description, ii) an explanation of the C++
+program, and iii) a summary of the Python program.
+
+-- Part 1: Problem Description --
+
