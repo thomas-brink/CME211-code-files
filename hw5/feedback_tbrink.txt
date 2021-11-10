@@ -1,0 +1,35 @@
+FILE:          checksoln.py
+FUNCTIONALITY  
+
+COMMENTS:
+-nice work, very good!!
+
+                  
+
+
+--------------------------
+FILE:          checksoln.py
+DOCUMENTATION  
+
+COMMENTS:
+-awesome, keep up the good work!
+
+                  
+
+
+--------------------------
+
+GRADING TA                  
+SUNet ID: adkakne, GitHub ID aasavari-kakne
+###################################################
+
+FUNCTIONALITY SCORE:                      +
+###################################################
+
+WRITEUP SCORE:                            +
+###################################################
+
+CODEQUALITY SCORE:                        +
+###################################################
+You used 1 late days on this assignment.
+If you have any problem about grading result, please file an issue in your GitHub repo.

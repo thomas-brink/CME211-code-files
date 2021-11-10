@@ -1,3 +1,15 @@
+#--functionality_0
+#--nice work, very good!!
+#--END
+
+#--code-quality_0
+#--very well thought out, I appreciate it!
+#--END
+
+#--documentation_0
+#--awesome, keep up the good work!
+#--END
+
 import numpy as np
 import sys
 
