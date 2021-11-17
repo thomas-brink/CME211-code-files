@@ -1,8 +1,9 @@
-#include "CGSolver.hpp"
 #include <cmath>
 #include <iostream>
-#include "matvecops.hpp"
 #include <vector>
+
+#include "CGSolver.hpp"
+#include "matvecops.hpp"
 
 int CGSolver(std::vector<double> &val,
              std::vector<int>    &row_ptr,

@@ -1,10 +1,11 @@
-#include "CGSolver.hpp"
-#include "COO2CSR.hpp"
 #include <fstream>
 #include <iostream>
-#include "matvecops.hpp"
 #include <string>
 #include <vector>
+
+#include "CGSolver.hpp"
+#include "COO2CSR.hpp"
+#include "matvecops.hpp"
 
 int main(int argc, char*argv[]) {
     /* Main function for solving the linear system of equations

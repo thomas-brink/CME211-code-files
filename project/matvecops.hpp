@@ -1,8 +1,6 @@
 #ifndef MATVECOPS_HPP
 #define MATVECOPS_HPP
 
-#include <cmath>
-#include <iostream>
 #include <vector>
 
 /* Function that performs vector addition given two input vectors. */

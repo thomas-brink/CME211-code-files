@@ -1,7 +1,8 @@
 #include <cmath>
 #include <iostream>
-#include "matvecops.hpp"
 #include <vector>
+
+#include "matvecops.hpp"
 
 std::vector<double> vecSum(const std::vector<double> &a,
                            const std::vector<double> &b) {
