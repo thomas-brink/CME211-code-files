@@ -15,7 +15,7 @@
 \maketitle
 
 \section{Algorithm}
-In Algorithm \ref{alg:CGSolver}, we provide pseudo-code for
+In Algorithm 1, we provide pseudo-code for
 the conjugate gradient algorithm we use to solve the linear
 system. Note that, in this algorithm, we use \textbf{bold}
 notation for vectors and matrices.
@@ -72,7 +72,7 @@ to which several other files implement further functionality.
 
 \begin{itemize}
     \item \textbf{CGSolver.cpp}. In the \textit{CGSolver.cpp} file, we perform 
-    the  conjugate gradient algorithm provided in Algorithm \ref{alg:CGSolver}. 
+    the  conjugate gradient algorithm provided in Algorithm 1. 
     This algorithm finds a solution $x^*$ to the system $Ax = b$, where $A$ is 
     sparse (CSR) and $b$ is given beforehand. Our code returns the number 
     of iterations until convergence. For this algorithm, we need to define
@@ -80,7 +80,7 @@ to which several other files implement further functionality.
     algorithm for each separate line, we make use of a separate file
     with functions for specific operations, called \textit{matvecops.cpp}.
     This avoids redundancy in the code as we avoid excess code for similar
-    operations (e.g., lines 5 and 12 in Algorithm \ref{alg:CGSolver}).
+    operations (e.g., lines 5 and 12 in Algorithm 1).
     \item \textbf{matvecops.cpp}. As previously stated, in the 
     \textit{matvecops.cpp} file, we define useful
     matrix-vector operations for the conjugate gradient algorithm. 
