@@ -73,7 +73,8 @@ to which several other files implement further functionality.
 \begin{itemize}
     \item \textbf{CGSolver.cpp}. In the \textit{CGSolver.cpp} file, we perform 
     the  conjugate gradient algorithm provided in Algorithm 1. 
-    This algorithm finds a solution $x^*$ to the system $Ax = b$, where $A$ is 
+    This algorithm finds a solution $\mathbf{x}^*$ to the system $\mathbf{A}
+    \mathbf{x} = \mathbf{b}$, where $\mathbf{A}$ is 
     sparse (CSR) and $b$ is given beforehand. Our code returns the number 
     of iterations until convergence. For this algorithm, we need to define
     several matrix and vector operations. Instead of doing so within the
