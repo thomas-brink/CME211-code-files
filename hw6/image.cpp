@@ -71,7 +71,7 @@ void Convolution(boost::multi_array<unsigned_char, 2>& input,
     // Perform convolution
     unsigned int rowIndex;
     unsigned int colIndex;
-    float kernelElement;
+    float kernelVal;
 
     for (unsigned int i = 0; i < inputRows; i++) {
         for (unsigned int j = 0; j < inputCols; j++) {
@@ -116,13 +116,14 @@ void Convolution(boost::multi_array<unsigned_char, 2>& input,
 
                     // Add product of input element and kernel element to output
                     kernelElement = kernel[k-startRow][l-startCol];
-                    output[i][j] += input[rowIndex][colIndex]*kernelElement;
+                    output[i][j] += input[rowIndex][colIndex]*kernelVal;
                 }
             }
 
-            // Weigh output by number of elements in kernel
-            output[i][j] *= floor(1/(kernelRows*kernelRows));
+            // Compute floor of resulting value as output
+            output[i][j] *= floor(output[i][j]);
 
+            // Correct for range {0,...,255} of char
             if (output[i][j] > 255) {
                 output[i][j] = 255;
             else if (output[i][j] < 0) {
@@ -132,13 +133,56 @@ void Convolution(boost::multi_array<unsigned_char, 2>& input,
     }
 }
 
+/* Function that takes in the size of a kernel, creates a kernel with this
+   size containing equal values summing up to 1, and performs convolution
+   on the input and output multi-arrays to form a blurred image. */
 void BoxBlur(kernelSize) {
-    boost::multi_array<unsigned char, 2> outputMatrix(boost::extents[][]);
-    boost::multi_array<unsigned char, 2> kernelMatrix(boost::extents[][]);
+    // Initialization
+    boost::multi_array<float,2> kernel(boost::extents[kernelSize][kernelSize]);
+    float scaleFactor = 1/(kernelSize*kernelSize);
 
-    // Fill sizes in box blur
+    for (unsigned int i = 0; i < kernelSize; i++) {
+        for (unsigned int j = 0; j < kernelSize; j++) {
+            // All elements have equal values, summing up to 1
+            kernel[i][j] = scaleFactor;
+        }
+    }
+
+    // Perform convolution on input, output, and kernel
+    Convolution(img, output, kernel);
 }
 
+/* Function that computes the sharpness of an image by using a Laplacian
+   kernel and convolution to find the maximum element of the resulting
+   output matrix. */
 unsigned int Sharpness() {
-    // Return sharpness of image
+    // Initialize Laplacian kernel and sharpness
+    boost::multi_array<float, 2> lapKernel(boost::extents[3][3]);
+    unsigned int sharpness = 0;
+
+    // Create Laplacian kernel
+    lapKernel[0][0] = 0;
+    lapKernel[0][1] = 1;
+    lapKernel[0][2] = 0;
+    lapKernel[1][0] = 1;
+    lapKernel[1][1] = -4;
+    lapKernel[1][2] = 1;
+    lapKernel[2][0] = 0;
+    lapKernel[2][1] = 1;
+    lapKernel[2][2] = 0;
+
+    // Perform convolution on input, output, and Laplacian kernel
+    Convolution(output, output, lapKernel);
+
+    // Find maximum element of output
+    for (unsigned int i = 0; i < output.shape()[0]; i++) {
+        for (unsigned int j = 0; j < output.shape()[1]; j++) {
+            if ((unsigned int) output[i][j] > sharpness) {
+                sharpness = (unsigned int) output[i][j];
+            }
+        }
+    }
+
+    // Return maximum element as sharpness
+    return sharpness;
 }
