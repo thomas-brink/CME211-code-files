@@ -14,9 +14,6 @@ image::image(std::string inputFile):originalFile(inputFile) {
     ReadGrayscaleJPEG(inputFile, img);
     this->outImg.resize(boost::extents[img.shape()[0]][img.shape()[1]]);
     this->outImg = img;
-    std::cout << (int) outImg[0][0] << " " << (int) outImg[0][1] << " " << (int) outImg[0][2] << " " << (int) outImg[0][3] << std::endl;
-    std::cout << (int) outImg[1][0] << " " << (int) outImg[1][1] << " " << (int) outImg[1][2] << " " << (int) outImg[1][3] << std::endl;
-    std::cout << (int) outImg[2][0] << " " << (int) outImg[2][1] << " " << (int) outImg[2][2] << " " << (int) outImg[2][3] << std::endl;
 }
 
 /* Function that takes a name of an output file and writes the
@@ -138,9 +135,6 @@ void image::Convolution(boost::multi_array<unsigned char, 2>& input,
             }
         }
     }
-    std::cout << (int) output[0][0] << " " << (int) output[0][1] << " " << (int) output[0][2] << " " << (int) output[0][3] << std::endl;
-    std::cout << (int) output[1][0] << " " << (int) output[1][1] << " " << (int) output[1][2] << " " << (int) output[1][3] << std::endl;
-    std::cout << (int) output[2][0] << " " << (int) output[2][1] << " " << (int) output[2][2] << " " << (int) output[2][3] << std::endl;
 }
 
 /* Function that takes in the size of a kernel, creates a kernel with this
@@ -182,8 +176,10 @@ unsigned int image::Sharpness() {
     lapKernel[2][1] = 1;
     lapKernel[2][2] = 0;
 
+    boost::multi_array<unsigned char, 2> outImgCopy = outImg;
+
     // Perform convolution on input, output, and Laplacian kernel
-    Convolution(outImg, outImg, lapKernel);
+    Convolution(outImgCopy, outImg, lapKernel);
 
     // Find maximum element of output
     for (unsigned int i = 0; i < outImg.shape()[0]; i++) {
