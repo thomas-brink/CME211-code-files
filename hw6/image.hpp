@@ -10,18 +10,21 @@ class image {
     // Initialization
     boost::multi_array<unsigned char, 2> img;
     std::string originalFile;
-    boost::multi_array<unsigned char, 2> output;
+    boost::multi_array<unsigned char, 2> outImg;
 
-    // Constructor
-    image(std::string inputFile);
-
-    // Methods
-    void Save(std::string writeFile="");
+    // Methods (private)
     void Convolution(boost::multi_array<unsigned char, 2>& input,
                      boost::multi_array<unsigned char, 2>& output,
                      boost::multi_array<float, 2>& kernel);
+
+  public:
+    // Constructor
+    image(std::string inputFile);
+
+    // Methods (public)
+    void Save(std::string writeFile/*=""*/);
     void BoxBlur(unsigned int kernelSize);
-    int Sharpness(void);
-}
+    unsigned int Sharpness(void);
+};
 
 #endif /* IMAGE_HPP */

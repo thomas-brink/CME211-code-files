@@ -4,7 +4,6 @@
 #include <cmath>
 #include <iostream>
 #include <string>
-#include <vector>
 
 #include "image.hpp"
 #include "hw6.hpp"
@@ -13,39 +12,42 @@
    as a boost multi-array. */
 image::image(std::string inputFile):originalFile(inputFile) {
     ReadGrayscaleJPEG(inputFile, img);
-    this->output = img;
-    std::cout << img.shape()[0] << " " << img.shape()[1] << std::endl;
+    this->outImg.resize(boost::extents[img.shape()[0]][img.shape()[1]]);
+    this->outImg = img;
+    std::cout << (int) outImg[0][0] << " " << (int) outImg[0][1] << " " << (int) outImg[0][2] << " " << (int) outImg[0][3] << std::endl;
+    std::cout << (int) outImg[1][0] << " " << (int) outImg[1][1] << " " << (int) outImg[1][2] << " " << (int) outImg[1][3] << std::endl;
+    std::cout << (int) outImg[2][0] << " " << (int) outImg[2][1] << " " << (int) outImg[2][2] << " " << (int) outImg[2][3] << std::endl;
 }
 
 /* Function that takes a name of an output file and writes the
    data attribute to this file in JPEG format */
-void image::Save(std::string writeFile /*=""*/) {
+void image::Save(std::string writeFile/*=""*/) {
     if (writeFile == "") {
         // Use original file and write to JPEG
-        WriteGrayscaleJPEG(originalFile, img);
+        WriteGrayscaleJPEG(originalFile, outImg);
     }
     else {
         // Use provided name and write to JPEG
-        WriteGrayscaleJPEG(writeFile, img);
+        WriteGrayscaleJPEG(writeFile, outImg);
     }
 }
 
 /* Method that takes in an input multi-array, original output
    multi-array, and a kernel, and performs convolution using
    the kernel to form a convoluted output. */
-void Convolution(boost::multi_array<unsigned_char, 2>& input,
-                 boost::multi_array<unsigned_char, 2>& output,
-                 boost::multi_array<float, 2>& kernel) {
+void image::Convolution(boost::multi_array<unsigned char, 2>& input,
+                        boost::multi_array<unsigned char, 2>& output,
+                        boost::multi_array<float, 2>& kernel) {
 
-    unsigned int inputRows = input.shape()[0];
-    unsigned int inputCols = input.shape()[1];
-    unsigned int outputRows = output.shape()[0];
-    unsigned int outputCols = output.shape()[1];
-    unsigned int kernelRows = kernel.shape()[0];
-    unsigned int kernelCols = kernel.shape()[1];
+    unsigned int inputRows = (unsigned int) input.shape()[0];
+    unsigned int inputCols = (unsigned int) input.shape()[1];
+    unsigned int outputRows = (unsigned int) output.shape()[0];
+    unsigned int outputCols = (unsigned int) output.shape()[1];
+    unsigned int kernelRows = (unsigned int) kernel.shape()[0];
+    unsigned int kernelCols = (unsigned int) kernel.shape()[1];
 
     // Check input and output are of same size
-    if (inputRows != outputRows or inputCols !=outputCols) {
+    if (inputRows != outputRows or inputCols != outputCols) {
         std::cerr << "Input and output do not have same size" << std::endl;
         return;
     }
@@ -76,13 +78,13 @@ void Convolution(boost::multi_array<unsigned_char, 2>& input,
     for (unsigned int i = 0; i < inputRows; i++) {
         for (unsigned int j = 0; j < inputCols; j++) {
             // Set indices of input elements used for kernel
-            startRow = i - (kernelRows - 1)/2;
-            endRow = i + (kernelRows - 1)/2;
-            startCol = j - (kernelCols - 1)/2;
-            endCol = j + (kernelCols - 1)/2;
+            int startRow = i - (kernelRows - 1)/2;
+            int endRow = i + (kernelRows - 1)/2;
+            int startCol = j - (kernelCols - 1)/2;
+            int endCol = j + (kernelCols - 1)/2;
 
             // Initialize output value
-            output[i][j] = 0;
+            float outputVal = 0;
 
             for (int k = startRow; k <= endRow; k++) {
                 // Iterate over row indices used for convolution
@@ -92,7 +94,7 @@ void Convolution(boost::multi_array<unsigned_char, 2>& input,
                         // Outside row bounds; use element of first row
                         rowIndex = 0;
                     }
-                    else if (k >= inputRows) {
+                    else if (k >= (int) inputRows) {
                         // Outside row bounds; use element of last row
                         rowIndex = inputRows - 1;
                     }
@@ -105,7 +107,7 @@ void Convolution(boost::multi_array<unsigned_char, 2>& input,
                         // Outside bounds; use element of first column
                         colIndex = 0;
                     }
-                    else if (l >= inputCols) {
+                    else if (l >= (int) inputCols) {
                         // Outside bounds; use element of last column
                         colIndex = inputCols - 1;
                     }
@@ -115,31 +117,40 @@ void Convolution(boost::multi_array<unsigned_char, 2>& input,
                     }
 
                     // Add product of input element and kernel element to output
-                    kernelElement = kernel[k-startRow][l-startCol];
-                    output[i][j] += input[rowIndex][colIndex]*kernelVal;
+                    kernelVal = kernel[k-startRow][l-startCol];
+                    float inputVal = (float) input[rowIndex][colIndex];
+                    outputVal += inputVal*kernelVal;
                 }
             }
 
             // Compute floor of resulting value as output
-            output[i][j] *= floor(output[i][j]);
+            outputVal = (float) floor(outputVal);
 
             // Correct for range {0,...,255} of char
-            if (output[i][j] > 255) {
-                output[i][j] = 255;
-            else if (output[i][j] < 0) {
-                output[i][j] = 0;
+            if (outputVal > 255) {
+                output[i][j] = (unsigned char) 255;
+            }
+            else if (outputVal < 0) {
+                output[i][j] = (unsigned char) 0;
+            }
+            else {
+                output[i][j] = (unsigned char) outputVal;
             }
         }
     }
+    std::cout << (int) output[0][0] << " " << (int) output[0][1] << " " << (int) output[0][2] << " " << (int) output[0][3] << std::endl;
+    std::cout << (int) output[1][0] << " " << (int) output[1][1] << " " << (int) output[1][2] << " " << (int) output[1][3] << std::endl;
+    std::cout << (int) output[2][0] << " " << (int) output[2][1] << " " << (int) output[2][2] << " " << (int) output[2][3] << std::endl;
 }
 
 /* Function that takes in the size of a kernel, creates a kernel with this
    size containing equal values summing up to 1, and performs convolution
    on the input and output multi-arrays to form a blurred image. */
-void BoxBlur(kernelSize) {
+void image::BoxBlur(unsigned int kernelSize) {
     // Initialization
     boost::multi_array<float,2> kernel(boost::extents[kernelSize][kernelSize]);
-    float scaleFactor = 1/(kernelSize*kernelSize);
+    float kernelNrElements = (float) kernel.num_elements();
+    float scaleFactor = 1/kernelNrElements;
 
     for (unsigned int i = 0; i < kernelSize; i++) {
         for (unsigned int j = 0; j < kernelSize; j++) {
@@ -149,13 +160,13 @@ void BoxBlur(kernelSize) {
     }
 
     // Perform convolution on input, output, and kernel
-    Convolution(img, output, kernel);
+    Convolution(img, outImg, kernel);
 }
 
 /* Function that computes the sharpness of an image by using a Laplacian
    kernel and convolution to find the maximum element of the resulting
    output matrix. */
-unsigned int Sharpness() {
+unsigned int image::Sharpness() {
     // Initialize Laplacian kernel and sharpness
     boost::multi_array<float, 2> lapKernel(boost::extents[3][3]);
     unsigned int sharpness = 0;
@@ -172,13 +183,13 @@ unsigned int Sharpness() {
     lapKernel[2][2] = 0;
 
     // Perform convolution on input, output, and Laplacian kernel
-    Convolution(output, output, lapKernel);
+    Convolution(outImg, outImg, lapKernel);
 
     // Find maximum element of output
-    for (unsigned int i = 0; i < output.shape()[0]; i++) {
-        for (unsigned int j = 0; j < output.shape()[1]; j++) {
-            if ((unsigned int) output[i][j] > sharpness) {
-                sharpness = (unsigned int) output[i][j];
+    for (unsigned int i = 0; i < outImg.shape()[0]; i++) {
+        for (unsigned int j = 0; j < outImg.shape()[1]; j++) {
+            if ((unsigned int) outImg[i][j] > sharpness) {
+                sharpness = (unsigned int) outImg[i][j];
             }
         }
     }
