@@ -7,23 +7,34 @@
 #include "hw6.hpp"
 
 class image {
-    // Initialization
-    boost::multi_array<unsigned char, 2> img;
+    // Private
+
+    /* Class attributes */
+    boost::multi_array<unsigned char, 2> inImg;
     std::string originalFile;
     boost::multi_array<unsigned char, 2> outImg;
 
-    // Methods (private)
+    /* Method that performs convolution on an output multi-array
+       using an input and a kernel. */
     void Convolution(boost::multi_array<unsigned char, 2>& input,
                      boost::multi_array<unsigned char, 2>& output,
                      boost::multi_array<float, 2>& kernel);
 
   public:
-    // Constructor
+    /* Constructor; takes in a JPEG image (.jpg) and
+       stores its data in a multi-array. */
     image(std::string inputFile);
 
-    // Methods (public)
-    void Save(std::string writeFile/*=""*/);
+    /* Method that writes a multi-array image to a JPEG file
+       under the name specified by the user. */
+    void Save(std::string writeFile="");
+
+    /* Method that creates a blurred image using a kernel of
+       user-specified size. */
     void BoxBlur(unsigned int kernelSize);
+
+    /* Method that computes the sharpness of a given multi-array
+       representation of an image. */
     unsigned int Sharpness(void);
 };
 

@@ -11,13 +11,13 @@
 /* Constructor that reads input JPEG file and stores this file
    as a boost multi-array. */
 image::image(std::string inputFile):originalFile(inputFile) {
-    ReadGrayscaleJPEG(inputFile, img);
-    this->outImg.resize(boost::extents[img.shape()[0]][img.shape()[1]]);
-    this->outImg = img;
+    ReadGrayscaleJPEG(originalFile, inImg); // Read input file
+    outImg.resize(boost::extents[inImg.shape()[0]][inImg.shape()[1]]);
+    outImg = inImg; // Set output to read input file
 }
 
 /* Function that takes a name of an output file and writes the
-   data attribute to this file in JPEG format */
+   data attribute to this file in JPEG format. */
 void image::Save(std::string writeFile/*=""*/) {
     if (writeFile == "") {
         // Use original file and write to JPEG
@@ -35,7 +35,7 @@ void image::Save(std::string writeFile/*=""*/) {
 void image::Convolution(boost::multi_array<unsigned char, 2>& input,
                         boost::multi_array<unsigned char, 2>& output,
                         boost::multi_array<float, 2>& kernel) {
-
+    // Initializations
     unsigned int inputRows = (unsigned int) input.shape()[0];
     unsigned int inputCols = (unsigned int) input.shape()[1];
     unsigned int outputRows = (unsigned int) output.shape()[0];
@@ -67,55 +67,54 @@ void image::Convolution(boost::multi_array<unsigned char, 2>& input,
         return;
     }
 
-    // Perform convolution
-    unsigned int rowIndex;
-    unsigned int colIndex;
-    float kernelVal;
+    // Declare variables for convolution
+    int startRow, endRow, startCol, endCol;
+    unsigned int rowIndex, colIndex;
+    float inputVal, outputVal, kernelVal;
 
     for (unsigned int i = 0; i < inputRows; i++) {
         for (unsigned int j = 0; j < inputCols; j++) {
             // Set indices of input elements used for kernel
-            int startRow = i - (kernelRows - 1)/2;
-            int endRow = i + (kernelRows - 1)/2;
-            int startCol = j - (kernelCols - 1)/2;
-            int endCol = j + (kernelCols - 1)/2;
+            startRow = i - (kernelRows - 1)/2;
+            endRow = i + (kernelRows - 1)/2;
+            startCol = j - (kernelCols - 1)/2;
+            endCol = j + (kernelCols - 1)/2;
 
-            // Initialize output value
-            float outputVal = 0;
+            // Initialize output value for row i and column j
+            outputVal = 0;
 
             for (int k = startRow; k <= endRow; k++) {
                 // Iterate over row indices used for convolution
+                if (k < 0) {
+                    // Outside input row bounds; use first row
+                    rowIndex = 0;
+                }
+                else if (k >= (int) inputRows) {
+                    // Outside input row bounds; use last row
+                    rowIndex = inputRows - 1;
+                }
+                else {
+                    // Inside input row bounds
+                    rowIndex = k;
+                }
                 for (int l = startCol; l <= endCol; l++) {
                     // Iterate over column indices used for convolution
-                    if (k < 0) {
-                        // Outside row bounds; use element of first row
-                        rowIndex = 0;
-                    }
-                    else if (k >= (int) inputRows) {
-                        // Outside row bounds; use element of last row
-                        rowIndex = inputRows - 1;
-                    }
-                    else {
-                        // Inside bounds
-                        rowIndex = k;
-                    }
-
                     if (l < 0) {
-                        // Outside bounds; use element of first column
+                        // Outside input column bounds; use first column
                         colIndex = 0;
                     }
                     else if (l >= (int) inputCols) {
-                        // Outside bounds; use element of last column
+                        // Outside input column bounds; use last column
                         colIndex = inputCols - 1;
                     }
                     else {
-                        // Inside bounds
+                        // Inside input column bounds
                         colIndex = l;
                     }
 
                     // Add product of input element and kernel element to output
                     kernelVal = kernel[k-startRow][l-startCol];
-                    float inputVal = (float) input[rowIndex][colIndex];
+                    inputVal = (float) input[rowIndex][colIndex];
                     outputVal += inputVal*kernelVal;
                 }
             }
@@ -123,7 +122,7 @@ void image::Convolution(boost::multi_array<unsigned char, 2>& input,
             // Compute floor of resulting value as output
             outputVal = (float) floor(outputVal);
 
-            // Correct for range {0,...,255} of char
+            // Correct for range {0,...,255} of unsigned char in JPEG
             if (outputVal > 255) {
                 output[i][j] = (unsigned char) 255;
             }
@@ -154,7 +153,7 @@ void image::BoxBlur(unsigned int kernelSize) {
     }
 
     // Perform convolution on input, output, and kernel
-    Convolution(img, outImg, kernel);
+    Convolution(inImg, outImg, kernel);
 }
 
 /* Function that computes the sharpness of an image by using a Laplacian
