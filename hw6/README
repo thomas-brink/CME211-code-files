@@ -1,0 +1,157 @@
+---- Introduction ----
+In this assignment, we perform image processing operations
+by coding an 'image' class containing several processing
+methods. We apply the class by a main() function. Below,
+we will go through the main files and functions used for
+this assignment.
+
+---- hw6 ----
+First of all, we obtained code files from the instructor
+captured in hw6.cpp and hw6.hpp (header file). This code
+includes a function used to read a JPEG image and store
+this image as a multidimensional (boost) array, and a
+function used to write a multidimensional array to a JPEG
+image. We obtained these functions readily and, as such,
+did not adjust these.
+
+---- image ----
+Second, we created an image.cpp code file and the
+corresponding image.hpp header file. The code contains
+in these files contains the functionality for the 'image'
+class. The class attributes and method prototypes are given
+in the image.hpp files, whereas the implementation of the
+class methods is given in image.cpp.
+
+The structure of the class is as follows;
+    - class attributes (private)
+    - constructor method (public)
+    - Save() method (public)
+    - Convolution() method (private)
+    - BoxBlur() method (public)
+    - Sharpness() method (public)
+
+-- Class attributes --
+We create (private) class attributes corresponding with the 
+input file string (e.g., "stanford.jpg"), the multi-array 
+representation of this input, and the multi-array 
+representation of the output (processed) image. Our
+class methods use these attributes for several processing
+operations.
+ 
+-- Constructor method --
+The first method that we use is a constructor method that
+is used to create instances of the image class. The constructor
+takes in an input file string for a JPEG image and reads this
+image in a multi-dimensional boost array. 
+
+-- Save() method --
+The second method we use is a Save() method, which takes as
+input a string name of a JPEG image to write the processed
+image data to. If no input is given, we write the processed
+image to the original (input) file name image. 
+
+-- Convolution() method --
+Our third method performs convolution on a multi-array
+representation of an image using a kernel to process
+an output array. Thus, the Convolution() method takes
+as input three multi-arrays for the input, output, and
+kernel, respectively.
+
+Before convolving data, we perform several checks that ensure
+our method is appropriate given the inputs. These checks
+include size checks between input and output, and size and
+shape checks for the kernel. In case we pass all checks, we
+continue with the actual convolution part. If not, we print
+an error message and exit the method. 
+
+For the actual convolution part, we iterate over all elements
+in the input multi-array and aim to convolve each element by
+using our kernel. Basically, what we want to do is build a
+matrix with the size of our kernel around a specific element
+situated in the center of this matrix, and multiply each 
+element of this box by the corresponding element in the kernel.
+Eventually, we would sum up all these products, which would
+give us our convolved output element. 
+
+However, building a matrix about an input element is not always
+possible, since this matrix might fall outside the boundaries
+of the input matrix. For example, if our kernel has size 5 and
+we want to build a 5x5 matrix around input element (2,1), the
+surrounding matrix would include the element with index (0,-1), 
+which does not exist. 
+
+As explained in the assignment, we can solve for this issue 
+by extending the input matrix, which essentially means that 
+we use column index 0 for all negative column indices and 
+column index N-1 (where we have N columns) for all indices 
+greater than N-1. Similar reasoning holds for the rows.
+
+Using this technique, we find all elements in the matrix
+surrounding a specific input element and sum the product
+of these elements and the corresponding kernel elements
+to find our specific output (processed) value. Eventually,
+the Convolution() method gives us a processed output matrix
+where each element is formed using the surrounding input
+'box' and the kernel. To make sure the processed output
+is of the right format, we take the floor() of each element
+(round down) and cast the elements to unsigned chars with
+range {0,...,255}. Then, these output elements, which
+are passed by reference in the output, form our new
+'output' or processed image data.
+
+Note that, although we also pass the input and kernel by
+reference (and the method is void), we do not alter the
+input and kernel in our method unless these arguments
+are set equal to the output element. For example, if
+we would perform Convolution(outImg, outImg, kernel), 
+we would automatically alter our input data, as this
+would be the same as our output data. This is very
+dangerous and would lead to mistakes and (wrong-intention)
+adjustments to the data being made easily. Therefore,
+we make the Convolution() method private and only call
+this method ourselves, through the next two methods.  
+
+-- BoxBlur() --
+The fourth method is the BoxBlur() method, which takes
+in an argument representing the size of a kernel,
+creates a square kernel of this size with equal elements
+summing up to 1, and performs convolution using this
+kernel. This function does not return an argument; 
+instead, through the pass by reference structure of
+the Convolution() function, it processes the output
+by means of the created kernel, which leads to a blurred
+image. Since we should be able to call this function
+to blur an image, this method is made public.
+
+-- Sharpness() --
+The fifth and final method in the image class is the
+Sharpness() method, which computes the sharpness of
+an image. It does so by creating a Laplacian (3x3)
+kernel and convolving a processed image (multi-array)
+by this kernel. Then, from the convolution output,
+it finds the maximum and returns this maximum
+as the sharpness. Again, as users should be able to
+calculate the sharpness of a given image, this function
+is public.
+
+---- main.cpp ----
+In this file, we store the main() function that applies
+the operations in the image class to use cases. The main()
+function first reads the "stanford.jpg" input image as
+original input, and computes and outputs its sharpness.
+Then, for kernel size k = 3,7,11,...,27, the main() 
+function creates a new class instance using the "stanford.jpg"
+file as input. With this new class instance and the kernel
+size, we blur the original image using BoxBlur(k) and save
+the blurred image under a specific name. Lastly, we compute
+the sharpness of the blurred image and output this number. 
+
+---- Makefile ----
+We provide a makefile that allows for direct compilation
+and cleaning of the compiled files. The makefile
+incorporates -O3 optimizations.
+
+---- stanford.jpg ----
+We also provide an image that can be used as input to
+the image class (and is used directly in the main.cpp
+function). 
