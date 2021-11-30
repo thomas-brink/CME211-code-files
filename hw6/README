@@ -16,7 +16,7 @@ did not adjust these.
 
 ---- image ----
 Second, we created an image.cpp code file and the
-corresponding image.hpp header file. The code contains
+corresponding image.hpp header file. The code
 in these files contains the functionality for the 'image'
 class. The class attributes and method prototypes are given
 in the image.hpp files, whereas the implementation of the
@@ -83,8 +83,9 @@ which does not exist.
 As explained in the assignment, we can solve for this issue 
 by extending the input matrix, which essentially means that 
 we use column index 0 for all negative column indices and 
-column index N-1 (where we have N columns) for all indices 
-greater than N-1. Similar reasoning holds for the rows.
+column index N-1 (where we have N columns, zero indexed) 
+for all indices greater than N-1. Similar reasoning holds 
+for the rows.
 
 Using this technique, we find all elements in the matrix
 surrounding a specific input element and sum the product
@@ -111,7 +112,7 @@ adjustments to the data being made easily. Therefore,
 we make the Convolution() method private and only call
 this method ourselves, through the next two methods.  
 
--- BoxBlur() --
+-- BoxBlur() method --
 The fourth method is the BoxBlur() method, which takes
 in an argument representing the size of a kernel,
 creates a square kernel of this size with equal elements
@@ -123,7 +124,7 @@ by means of the created kernel, which leads to a blurred
 image. Since we should be able to call this function
 to blur an image, this method is made public.
 
--- Sharpness() --
+-- Sharpness() method --
 The fifth and final method in the image class is the
 Sharpness() method, which computes the sharpness of
 an image. It does so by creating a Laplacian (3x3)

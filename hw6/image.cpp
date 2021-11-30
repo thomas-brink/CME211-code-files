@@ -13,11 +13,12 @@
 image::image(std::string inputFile):originalFile(inputFile) {
     ReadGrayscaleJPEG(originalFile, inImg); // Read input file
     outImg.resize(boost::extents[inImg.shape()[0]][inImg.shape()[1]]);
-    outImg = inImg; // Set output to read input file
+    outImg = inImg; // Initialize output to input data
 }
 
 /* Function that takes a name of an output file and writes the
-   data attribute to this file in JPEG format. */
+   data attribute to this file in JPEG format. Default is "",
+   in which case we write the output to the original file name. */
 void image::Save(std::string writeFile/*=""*/) {
     if (writeFile == "") {
         // Use original file and write to JPEG
@@ -31,7 +32,7 @@ void image::Save(std::string writeFile/*=""*/) {
 
 /* Method that takes in an input multi-array, original output
    multi-array, and a kernel, and performs convolution using
-   the kernel to form a convoluted output. */
+   the kernel to form a convolved output. */
 void image::Convolution(boost::multi_array<unsigned char, 2>& input,
                         boost::multi_array<unsigned char, 2>& output,
                         boost::multi_array<float, 2>& kernel) {
@@ -46,25 +47,25 @@ void image::Convolution(boost::multi_array<unsigned char, 2>& input,
     // Check input and output are of same size
     if (inputRows != outputRows or inputCols != outputCols) {
         std::cerr << "Input and output do not have same size" << std::endl;
-        return;
+        exit(0);
     }
 
     // Check that kernel is square
     if (kernelRows != kernelCols) {
         std::cerr << "Kernel is not square" << std::endl;
-        return;
+        exit(0);
     }
 
     // Check that kernel has size >= 3
     if (kernelRows < 3) {
         std::cerr << "Kernel has too small size (< 3)" << std::endl;
-        return;
+        exit(0);
     }
 
     // Check kernel has odd size
     if (kernelRows % 2 == 0) {
         std::cerr << "Kernel does not have odd size" << std::endl;
-        return;
+        exit(0);
     }
 
     // Declare variables for convolution
@@ -175,6 +176,7 @@ unsigned int image::Sharpness() {
     lapKernel[2][1] = 1;
     lapKernel[2][2] = 0;
 
+    // Make copy to distinguish input and output in convolution
     boost::multi_array<unsigned char, 2> outImgCopy = outImg;
 
     // Perform convolution on input, output, and Laplacian kernel
