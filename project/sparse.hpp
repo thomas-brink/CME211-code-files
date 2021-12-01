@@ -12,9 +12,6 @@ class SparseMatrix
     int ncols;
     int nrows;
 
-    /* TODO: Add any additional private data attributes and/or methods  you need */
-
-
   public:
     /* Method to modify sparse matrix dimensions */
     void Resize(int nrows, int ncols);
@@ -27,9 +24,6 @@ class SparseMatrix
 
     /* Method to perform sparse matrix vector multiplication using CSR formatted matrix */
     std::vector<double> MulVec(std::vector<double> &vec);
-
-    /* TODO: Add any additional public methods you need */
-    
 };
 
 #endif /* SPARSE_HPP */

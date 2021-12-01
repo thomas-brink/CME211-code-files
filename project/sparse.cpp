@@ -1,5 +1,7 @@
+#include <iostream>
 #include <vector>
 
+#include "CGSolver.hpp"
 #include "COO2CSR.hpp"
 #include "matvecops.hpp"
 #include "sparse.hpp"
@@ -13,16 +15,16 @@ void SparseMatrix::Resize(int nrows, int ncols) {
 
     // Use only upper left block from current matrix
     std::vector<int> remove_indices;
-    for (int i = 0; i < i_idx.size(); i--) {
+    for (unsigned int i = 0; i < i_idx.size(); i--) {
         if (i_idx[i] > (nrows-1) or j_idx[i] > (ncols-1)) {
             remove_indices.push_back(i);
         }
     }
 
-    for (int r = (remove_indices.size()-1); r >= 0; r--) {
-        i_idx.erase(remove_indices[r]);
-        j_idx.erase(remove_indices[r]);
-        a.erase(remove_indices[r]);
+    for (unsigned int r = (remove_indices.size()-1); r >= 0; r--) {
+        i_idx.erase(i_idx.begin() + remove_indices[r]);
+        j_idx.erase(j_idx.begin() + remove_indices[r]);
+        a.erase(a.begin() + remove_indices[r]);
     }
 }
 
@@ -50,6 +52,6 @@ void SparseMatrix::ConvertToCSR() {
 /* Function that takes in a vector and calculates the
    matrix-vector product of the sparse matrix and this
    vector. This function is designed for CSR-matrices. */
-std::vector<double> MulVec(std::vector<double> &vec) {
+std::vector<double> SparseMatrix::MulVec(std::vector<double> &vec) {
     return matVecProd(a, i_idx, j_idx, vec);
 }
