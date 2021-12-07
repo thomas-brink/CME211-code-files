@@ -21,7 +21,7 @@ void SparseMatrix::Resize(int nrows, int ncols) {
         }
     }
 
-    for (unsigned int r = (remove_indices.size()-1); r >= 0; r--) {
+    for (int r = ((int) remove_indices.size()-1); r >= 0; r--) {
         i_idx.erase(i_idx.begin() + remove_indices[r]);
         j_idx.erase(j_idx.begin() + remove_indices[r]);
         a.erase(a.begin() + remove_indices[r]);

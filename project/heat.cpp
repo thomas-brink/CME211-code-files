@@ -14,7 +14,7 @@
 int HeatEquation2D::Setup(std::string inputFile) {
     // Initializations
     unsigned int gridRows, gridCols, sizeA;
-    float length, width, h, Tc, Th;
+    double length, width, h, Tc, Th;
     std::ifstream inputData(inputFile);
 
     /* Make separate loadData function */
@@ -30,17 +30,16 @@ int HeatEquation2D::Setup(std::string inputFile) {
         return 1;
     }
 
-    if ((floor(length/h) == length/h) and (floor(width/h) == width/h)) {
+    if (floor(length/h) == length/h && floor(width/h) == width/h) {
         // Set number of rows and columns in the grid
         gridRows = (int) (width/h) + 1;
         gridCols = (int) (length/h) + 1;
     }
     else {
-        // Cannot divide grid into equally spaced parts using h
+        // Cannot divide the grid into equally spaced parts using h
         std::cerr << "Length and/or width are no multiples of h" << std::endl;
         return 1;
     }
-    /* End loadData function */
 
     // Calculate number of interior nodes in grid and resize A
     sizeA = gridRows*gridCols - 2*gridCols - (gridRows-2);

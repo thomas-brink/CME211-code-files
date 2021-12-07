@@ -49,7 +49,7 @@ int CGSolver(SparseMatrix              &A,
         L2Normr = L2Norm(r);
         if (L2Normr/L2Normr0 < tol) {
             writeSolution(nIter, x, soln_prefix);
-            return nIter;
+            return nIter+1;
         }
         beta = dotProduct(r,r)/rDot; // Dot product gives r_(n+1)^T r_(n+1)
         p = vecSum(r, vecScalarProd(p, beta));
