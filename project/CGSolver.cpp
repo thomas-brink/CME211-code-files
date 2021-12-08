@@ -71,7 +71,8 @@ void writeSolution(const int nIter,
 
     // Format solution file name
     std::ostringstream solFileName;
-    solFileName << soln_prefix << std::setw(3) << std::setfill('0') << nIter << ".txt";
+    solFileName << soln_prefix << std::setw(3)
+                << std::setfill('0') << nIter << ".txt";
     std::string solFileString(solFileName.str());
 
     // Write solution vector to file

@@ -6,6 +6,7 @@
 class SparseMatrix
 {
   private:
+    /* Class attributes */
     std::vector<int> i_idx;
     std::vector<int> j_idx;
     std::vector<double> a;

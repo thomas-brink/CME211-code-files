@@ -7,7 +7,8 @@ import scipy.interpolate as scin
 import sys
 
 def loadInput(inputFile):
-    # Read input data
+    """ Function that reads in the input data and raises errors
+        when the input file cannot be loaded. """
     try:
         with open(inputFile, 'r') as f:
             for line in f:
@@ -30,7 +31,8 @@ def loadInput(inputFile):
 
 
 def loadSolution(solutionFile):
-    # Read solution file
+    """ Function that reads in the solution data from a solution
+        file and outputs this data in numpy array format. """
     try:
         solutionData = np.loadtxt(solutionFile)
     except:
@@ -41,7 +43,11 @@ def loadSolution(solutionFile):
 
 
 def processData(length, width, h, Tc, Th, solutionData):
-    # Create matrix representing grid
+    """ Function that creates the discretized pipe wall
+        including the isothermal and periodic boundaries.
+        This function also calculates the mean temperature
+        in the discretized pipe wall or grid. """
+    # Create matrix representing pipe wall (grid)
     nrCols = int(length/h) + 1
     nrRows = int(width/h) + 1
     pipeGrid = np.zeros((nrRows,nrCols))
@@ -68,6 +74,8 @@ def processData(length, width, h, Tc, Th, solutionData):
 
 
 def plotData(length, width, h, pipeGrid, meanTemp):
+    """ Function that creates the pseudocolor plot and isoline
+        given the pipe wall data. The plot is written to file. """
     # Set up pseudocolor plot
     plt.figure()
     plt.axis('equal')
@@ -85,6 +93,7 @@ def plotData(length, width, h, pipeGrid, meanTemp):
 
 
 if __name__ == "__main__":
+    """ Run main system; call all functions and print output. """
     if len(sys.argv) != 3:
         # Not enough arguments, print usage message
         print("Usage:")
@@ -96,11 +105,15 @@ if __name__ == "__main__":
     solutionFile = sys.argv[2]
     inputData =[]
 
+    # Load input and solution data
     length, width, h, Tc, Th = loadInput(inputFile)
     solutionData = loadSolution(solutionFile)
 
+    # Process data
     pipeGrid, meanTemp = processData(length, width, h, Tc, Th, solutionData)
 
+    # Print mean temperature
     print("Mean Temperature: {:.5f}".format(meanTemp))
 
+    # Generate pseudocolor plot
     plotData(length, width, h, pipeGrid, meanTemp)

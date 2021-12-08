@@ -23,7 +23,8 @@ int CGSolver(SparseMatrix        &A,
              double              tol,
              std::string         soln_prefix);
 
-/* Add description of function. */
+/* Function that writes a solution x at a given step of the
+   CG process to a solution file.. */
 void writeSolution(const int nIter,
                    const std::vector<double> x,
                    const std::string soln_prefix);

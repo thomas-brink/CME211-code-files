@@ -13,7 +13,8 @@ void SparseMatrix::Resize(int nrows, int ncols) {
     this->nrows = nrows;
     this->ncols = ncols;
 
-    // Use only upper left block from current matrix
+    /* Use only upper left block from current matrix if
+       input dimensions smaller than current dimensions. */
     std::vector<int> remove_indices;
     for (unsigned int i = 0; i < i_idx.size(); i--) {
         if (i_idx[i] > (nrows-1) or j_idx[i] > (ncols-1)) {

@@ -9,6 +9,7 @@
 class HeatEquation2D
 {
   private:
+    /* Class attributes */
     SparseMatrix A;
     std::vector<double> b, x;
 
