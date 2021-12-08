@@ -1,3 +1,4 @@
+# Import libraries
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -17,6 +18,15 @@ if __name__ == "__main__":
     solutionFile = sys.argv[2]
     inputData =[]
 
+    length, width, h, Tc, Th = loadInput(inputFile)
+    solutionData = loadSolution(solutionFile)
+
+    pipeGrid, meanTemp = processData(length, width, h, Tc, Th, solutionData)
+
+    print("Mean Temperature: {:.5f}".format(meanTemp))
+
+
+def loadInput(inputFile):
     # Read input data
     try:
         with open(inputFile, 'r') as f:
@@ -36,6 +46,9 @@ if __name__ == "__main__":
     # Print out input message
     print("Input file processed:", inputFile)
 
+    return length, width, h, Tc, Th
+
+def loadSolution(solutionFile)
     # Read solution file
     try:
         solutionData = np.loadtxt(solutionFile)
@@ -43,6 +56,9 @@ if __name__ == "__main__":
         print("Error while reading solution file")
         sys.exit(0)
 
+    return solutionData
+
+def processData(length, width, h, Tc, Th, solutionData):
     # Create matrix representing grid
     nrCols = int(length/h) + 1
     nrRows = int(width/h) + 1
@@ -67,6 +83,9 @@ if __name__ == "__main__":
     meanTemp = pipeSum/(nrRows*nrCols)
     print("Mean Temperature: {:.5f}".format(meanTemp))
 
+    return pipeGrid, meanTemp
+
+def plotData(length, width, h, pipeGrid, meanTemp):
     # Set up pseudocolor plot
     plt.figure()
     plt.axis('equal')
@@ -77,6 +96,5 @@ if __name__ == "__main__":
     # Add isoline
     plt.contour(x, y, pipeGrid, [meanTemp], color='black')
 
-    # Save figure to plot
-    plt.savefig("pseudoColorPlot.png")
-
+    # Save figure to plot (remove .txt from input name)
+    plt.savefig("Plot_{}.png".format(inputFile[:-4]))
