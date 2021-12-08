@@ -6,26 +6,6 @@ import numpy as np
 import scipy.interpolate as scin
 import sys
 
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        # Not enough arguments, print usage message
-        print("Usage:")
-        print(" $ python3 postprocess.py <input file> <solution file>")
-        sys.exit(0)
-
-    # Declare variables
-    inputFile = sys.argv[1]
-    solutionFile = sys.argv[2]
-    inputData =[]
-
-    length, width, h, Tc, Th = loadInput(inputFile)
-    solutionData = loadSolution(solutionFile)
-
-    pipeGrid, meanTemp = processData(length, width, h, Tc, Th, solutionData)
-
-    print("Mean Temperature: {:.5f}".format(meanTemp))
-
-
 def loadInput(inputFile):
     # Read input data
     try:
@@ -48,7 +28,8 @@ def loadInput(inputFile):
 
     return length, width, h, Tc, Th
 
-def loadSolution(solutionFile)
+
+def loadSolution(solutionFile):
     # Read solution file
     try:
         solutionData = np.loadtxt(solutionFile)
@@ -57,6 +38,7 @@ def loadSolution(solutionFile)
         sys.exit(0)
 
     return solutionData
+
 
 def processData(length, width, h, Tc, Th, solutionData):
     # Create matrix representing grid
@@ -81,9 +63,9 @@ def processData(length, width, h, Tc, Th, solutionData):
         for j in range(nrCols):
             pipeSum += pipeGrid[i][j]
     meanTemp = pipeSum/(nrRows*nrCols)
-    print("Mean Temperature: {:.5f}".format(meanTemp))
 
     return pipeGrid, meanTemp
+
 
 def plotData(length, width, h, pipeGrid, meanTemp):
     # Set up pseudocolor plot
@@ -98,3 +80,25 @@ def plotData(length, width, h, pipeGrid, meanTemp):
 
     # Save figure to plot (remove .txt from input name)
     plt.savefig("Plot_{}.png".format(inputFile[:-4]))
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        # Not enough arguments, print usage message
+        print("Usage:")
+        print(" $ python3 postprocess.py <input file> <solution file>")
+        sys.exit(0)
+
+    # Declare variables
+    inputFile = sys.argv[1]
+    solutionFile = sys.argv[2]
+    inputData =[]
+
+    length, width, h, Tc, Th = loadInput(inputFile)
+    solutionData = loadSolution(solutionFile)
+
+    pipeGrid, meanTemp = processData(length, width, h, Tc, Th, solutionData)
+
+    print("Mean Temperature: {:.5f}".format(meanTemp))
+
+    plotData(length, width, h, pipeGrid, meanTemp)
