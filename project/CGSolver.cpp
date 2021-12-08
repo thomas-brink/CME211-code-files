@@ -49,7 +49,7 @@ int CGSolver(SparseMatrix              &A,
         L2Normr = L2Norm(r);
         if (L2Normr/L2Normr0 < tol) {
             writeSolution(nIter, x, soln_prefix);
-            return nIter+1;
+            return nIter;
         }
         beta = dotProduct(r,r)/rDot; // Dot product gives r_(n+1)^T r_(n+1)
         p = vecSum(r, vecScalarProd(p, beta));
@@ -71,7 +71,7 @@ void writeSolution(const int nIter,
 
     // Format solution file name
     std::ostringstream solFileName;
-    solFileName << soln_prefix << std::setw(4) << std::setfill('0') << nIter << ".txt";
+    solFileName << soln_prefix << std::setw(3) << std::setfill('0') << nIter << ".txt";
     std::string solFileString(solFileName.str());
 
     // Write solution vector to file
