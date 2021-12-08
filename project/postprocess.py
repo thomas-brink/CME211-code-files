@@ -74,6 +74,8 @@ def plotData(length, width, h, pipeGrid, meanTemp):
     y, x = np.mgrid[width:-h:-h, 0:length+h:h]
     plt.pcolor(x, y, pipeGrid, cmap='jet')
     plt.colorbar()
+    plt.xlabel('x')
+    plt.ylabel('y')
 
     # Add isoline
     plt.contour(x, y, pipeGrid, [meanTemp], color='black')
