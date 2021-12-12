@@ -1,3 +1,18 @@
+//--documentation_0
+//--Well done
+//--END
+
+//--functionality_0
+//--Good work
+//--END
+
+//--code-quality_0
+//--you can consider finding co-ordinates
+//--for the neighbors (ni, nj) by doing
+//--i.e. ni := min(max(0, ni), m - 1)
+//--i.e. nj := min(max(0, nj), n - 1)
+//--END
+
 #include <iomanip>
 #include <iostream>
 #include <sstream>
