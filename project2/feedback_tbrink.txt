@@ -1,0 +1,45 @@
+FILE:          postprocess.py
+FUNCTIONALITY  
+
+COMMENTS:
+-Looks great! Nice work.
+
+                  
+
+
+--------------------------
+FILE:          postprocess.py
+DOCUMENTATION  
+
+COMMENTS:
+-Outstanding writeup, one of the best looking ones I've seen.  Nice work.
+
+                  
+
+
+--------------------------
+FILE:          postprocess.py
+CODEQUALITY    
+
+COMMENTS:
+-Everything looks fantastic.  Very easy to read and follow along.
+
+                  
+
+
+--------------------------
+
+GRADING TA                  
+SUNet ID: maxfit, GitHub ID trevormaxfield
+###################################################
+
+FUNCTIONALITY SCORE:                      +
+###################################################
+
+WRITEUP SCORE:                            +
+###################################################
+
+CODEQUALITY SCORE:                        +
+###################################################
+You used 0 late days on this assignment.
+If you have any problem about grading result, please file an issue in your GitHub repo.
